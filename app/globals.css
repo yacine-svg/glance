@@ -53,23 +53,25 @@ body {
   background: var(--bg);
 }
 .sky-img {
+  /* full width, natural height (taller than the screen), or full height on very tall screens */
   position: absolute;
-  inset: -4% 0;
-  background: url("/bg/night.jpg") center 30% / cover no-repeat;
-  transform: scale(1.08);
+  top: 0;
+  left: 50%;
+  width: 100%;
+  min-height: 100%;
+  height: auto;
+  object-fit: cover;
+  transform: translate3d(0, 0, 0);
+  translate: -50% 0;
   will-change: transform;
-}
-@media (min-aspect-ratio: 4/5) {
-  .sky-img {
-    background-image: url("/bg/night-wide.jpg");
-    background-position: center 70%;
-  }
+  display: block;
+  max-width: none;
 }
 .sky-shade {
   /* keeps the text readable: clear sky at the top, deeper night lower down */
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(11, 21, 48, 0.35) 0%, rgba(11, 21, 48, 0.55) 45%, rgba(8, 14, 32, 0.82) 100%);
+  background: linear-gradient(180deg, rgba(11, 21, 48, 0.3) 0%, rgba(11, 21, 48, 0.5) 50%, rgba(8, 14, 32, 0.62) 100%);
 }
 ::selection {
   background: var(--heat);

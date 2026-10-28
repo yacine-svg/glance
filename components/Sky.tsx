@@ -3,36 +3,51 @@
 import { useEffect, useRef } from "react";
 
 /*
- * Fixed night-sky background (portrait image on phones, landscape crop on wide
- * screens), with a gentle parallax as the page scrolls. Lenis drives native
- * scroll events, so this follows the smooth scrolling. Static for reduced motion.
+ * Fixed night-sky background that travels through the WHOLE image as you
+ * scroll: stars and the Milky Way at the top of the page, the mountains in the
+ * middle, the lake's reflection at the bottom. The image is sized to the
+ * screen's width (or height, if that's larger), and moved by exactly the part
+ * that doesn't fit. Lenis drives native scroll events, so the movement follows
+ * the smooth scrolling. With reduced motion it stays still.
  */
 export default function Sky() {
-  const el = useRef<HTMLDivElement>(null);
+  const img = useRef<HTMLImageElement>(null);
+
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const el = img.current;
+    if (!el) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let raf = 0;
-    const on = () => {
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        raf = 0;
-        const max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
-        const p = Math.min(1, window.scrollY / max);
-        if (el.current) el.current.style.transform = `translate3d(0, ${(-p * 6).toFixed(2)}%, 0) scale(1.08)`;
-      });
+    const update = () => {
+      raf = 0;
+      const travel = Math.max(0, el.offsetHeight - window.innerHeight); // part of the image below the screen
+      const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const p = reduced ? 0.35 : Math.min(1, Math.max(0, window.scrollY / max));
+      el.style.transform = `translate3d(0, ${(-p * travel).toFixed(1)}px, 0)`;
     };
-    on();
-    window.addEventListener("scroll", on, { passive: true });
-    window.addEventListener("resize", on);
+    const schedule = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    el.addEventListener("load", schedule);
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    // the page grows as text is generated: keep the mapping right
+    const ro = new ResizeObserver(schedule);
+    ro.observe(document.body);
     return () => {
       cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", on);
-      window.removeEventListener("resize", on);
+      el.removeEventListener("load", schedule);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      ro.disconnect();
     };
   }, []);
+
   return (
     <div className="sky" aria-hidden="true">
-      <div ref={el} className="sky-img" />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img ref={img} className="sky-img" src="/bg/night.jpg" alt="" decoding="async" fetchPriority="high" />
       <div className="sky-shade" />
     </div>
   );
