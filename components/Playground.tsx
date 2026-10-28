@@ -176,7 +176,7 @@ export default function Playground() {
                       key={i}
                       data-i={i}
                       className={`t${t.isPrompt ? " prompt" : ""}${i === sel ? " sel" : ""}`}
-                      style={w > 0.04 ? { backgroundColor: `rgba(242, 181, 68, ${(0.06 + w * 0.6).toFixed(3)})` } : undefined}
+                      style={w > 0.04 ? { backgroundColor: `rgba(246, 180, 94, ${(0.06 + w * 0.6).toFixed(3)})` } : undefined}
                       onMouseEnter={() => setHover(i)}
                       onClick={() => setPinned(i === pinned ? null : i)}
                     >

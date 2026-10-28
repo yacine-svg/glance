@@ -4,22 +4,25 @@
  * the highlighted words, the glance lines, the chosen guess.
  */
 :root {
-  --bg: #0e1915;
-  --bg-2: #12201b;
-  --panel: #15241f;
-  --panel-2: #1c2e28;
-  --line: rgba(239, 233, 220, 0.1);
-  --line-2: rgba(239, 233, 220, 0.2);
-  --ink: #efe9dc;
-  --ink-2: #d9d2c2;
-  --muted: #98ab9f;
-  --heat: #f2b544;
-  --heat-ink: #231803;
+  /* taken from the night-sky background */
+  --bg: #0b1530; /* deep sky */
+  --bg-2: rgba(12, 21, 46, 0.72);
+  --panel: rgba(13, 22, 50, 0.64); /* glass over the sky */
+  --panel-2: rgba(34, 48, 92, 0.55);
+  --line: rgba(190, 205, 255, 0.13);
+  --line-2: rgba(190, 205, 255, 0.26);
+  --ink: #edf0ff; /* starlight */
+  --ink-2: #c9d2f0;
+  --muted: #9aa7d0;
+  --star: #8fb4ff; /* the blue stars */
+  --heat: #f6b45e; /* the glow on the horizon: attention */
+  --heat-ink: #241503;
   --err: #ff8a7a;
   --serif: var(--font-serif), Georgia, serif;
   --sans: var(--font-sans), system-ui, sans-serif;
   --gutter: clamp(16px, 4vw, 56px);
   --ease: cubic-bezier(0.2, 0.7, 0.1, 1);
+  --glass: blur(14px) saturate(1.2);
   color-scheme: dark;
 }
 * {
@@ -36,9 +39,36 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 body {
-  /* a faint vignette, like lamplight on a desk */
-  background: radial-gradient(1200px 700px at 30% -10%, rgba(242, 181, 68, 0.06), transparent 60%), var(--bg);
+  background: var(--bg);
   min-height: 100vh;
+}
+
+/* ---------- night sky ---------- */
+.sky {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: var(--bg);
+}
+.sky-img {
+  position: absolute;
+  inset: -4% 0;
+  background: url("/bg/night.jpg") center 30% / cover no-repeat;
+  transform: scale(1.08);
+  will-change: transform;
+}
+@media (min-aspect-ratio: 4/5) {
+  .sky-img {
+    background-image: url("/bg/night-wide.jpg");
+    background-position: center 70%;
+  }
+}
+.sky-shade {
+  /* keeps the text readable: clear sky at the top, deeper night lower down */
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(11, 21, 48, 0.35) 0%, rgba(11, 21, 48, 0.55) 45%, rgba(8, 14, 32, 0.82) 100%);
 }
 ::selection {
   background: var(--heat);
@@ -111,8 +141,9 @@ p {
   align-items: center;
   gap: 24px;
   padding: 16px var(--gutter);
-  background: rgba(14, 25, 21, 0.78);
-  backdrop-filter: blur(12px);
+  background: rgba(11, 21, 48, 0.55);
+  backdrop-filter: var(--glass);
+  -webkit-backdrop-filter: var(--glass);
   border-bottom: 1px solid var(--line);
 }
 .top .brand {
@@ -158,6 +189,7 @@ p {
 }
 .hero h1 {
   max-width: 13ch;
+  text-shadow: 0 2px 30px rgba(8, 14, 32, 0.6);
 }
 .hero h1 em {
   font-style: italic;
@@ -167,7 +199,7 @@ p {
   margin-top: 22px;
   max-width: 58ch;
   font-size: clamp(1.05rem, 1.5vw, 1.2rem);
-  color: var(--muted);
+  color: var(--ink-2);
 }
 .facts {
   display: flex;
@@ -290,6 +322,8 @@ button:disabled {
   align-items: stretch;
   padding: 8px;
   background: var(--panel);
+  backdrop-filter: var(--glass);
+  -webkit-backdrop-filter: var(--glass);
   border: 1px solid var(--line-2);
   border-radius: 16px;
   transition: border-color 0.2s;
@@ -377,7 +411,9 @@ button:disabled {
 /* the page the model writes on */
 .book {
   margin-top: 22px;
-  background: linear-gradient(180deg, var(--bg-2), var(--panel));
+  background: linear-gradient(180deg, rgba(10, 18, 42, 0.78), rgba(13, 22, 50, 0.7));
+  backdrop-filter: var(--glass);
+  -webkit-backdrop-filter: var(--glass);
   border: 1px solid var(--line);
   border-radius: 6px 6px 14px 14px;
   box-shadow: 0 30px 80px -40px rgba(0, 0, 0, 0.7);
@@ -485,6 +521,8 @@ button:disabled {
 /* inspector */
 .panel {
   background: var(--panel);
+  backdrop-filter: var(--glass);
+  -webkit-backdrop-filter: var(--glass);
   border: 1px solid var(--line);
   border-radius: 14px;
   padding: 22px;
@@ -546,7 +584,7 @@ button:disabled {
 .cands .bar i {
   display: block;
   height: 100%;
-  background: var(--muted);
+  background: var(--star);
   transition: width 0.3s var(--ease);
 }
 .cands li.chosen .bar i {
@@ -652,6 +690,7 @@ button:disabled {
 
 footer {
   padding: 40px var(--gutter);
+  background: rgba(8, 14, 32, 0.6);
   border-top: 1px solid var(--line);
   color: var(--muted);
   font-size: 0.9rem;

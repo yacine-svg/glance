@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans, Newsreader } from "next/font/google";
 import Nav from "@/components/Nav";
+import Sky from "@/components/Sky";
 import SmoothScroll from "@/components/SmoothScroll";
 import "./globals.css";
 
@@ -17,6 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${serif.variable} ${sans.variable}`}>
       <body>
+        <Sky />
         <SmoothScroll>
           <Nav />
           {children}

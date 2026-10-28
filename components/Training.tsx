@@ -33,7 +33,7 @@ function LossChart({ log }: { log: Log }) {
     <svg className="chart" viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Training loss and validation loss falling over training steps">
       {ticks.map((t) => (
         <g key={t}>
-          <line x1={P.l} x2={W - P.r} y1={y(t)} y2={y(t)} stroke="rgba(239,233,220,0.1)" />
+          <line x1={P.l} x2={W - P.r} y1={y(t)} y2={y(t)} stroke="rgba(190,205,255,0.12)" />
           <text x={P.l - 8} y={y(t) + 4} textAnchor="end">
             {t}
           </text>
@@ -42,17 +42,17 @@ function LossChart({ log }: { log: Log }) {
       <text x={W / 2} y={H - 6} textAnchor="middle">
         training step
       </text>
-      <polyline fill="none" stroke="#9fb0a6" strokeWidth="2" points={train.join(" ")} />
-      <polyline fill="none" stroke="#f2b544" strokeWidth="2.5" points={log.evals.map((e) => `${x(e.step)},${y(e.val)}`).join(" ")} />
+      <polyline fill="none" stroke="#8fb4ff" strokeWidth="2" points={train.join(" ")} />
+      <polyline fill="none" stroke="#f6b45e" strokeWidth="2.5" points={log.evals.map((e) => `${x(e.step)},${y(e.val)}`).join(" ")} />
       {log.evals.map((e) => (
-        <circle key={e.step} cx={x(e.step)} cy={y(e.val)} r="3.5" fill="#f2b544" />
+        <circle key={e.step} cx={x(e.step)} cy={y(e.val)} r="3.5" fill="#f6b45e" />
       ))}
       <g transform={`translate(${W - P.r - 210}, ${P.t + 8})`}>
-        <line x1="0" x2="18" y1="6" y2="6" stroke="#9fb0a6" strokeWidth="2" />
+        <line x1="0" x2="18" y1="6" y2="6" stroke="#8fb4ff" strokeWidth="2" />
         <text x="24" y="10">
           training loss
         </text>
-        <line x1="110" x2="128" y1="6" y2="6" stroke="#f2b544" strokeWidth="2.5" />
+        <line x1="110" x2="128" y1="6" y2="6" stroke="#f6b45e" strokeWidth="2.5" />
         <text x="134" y="10">
           held-out loss
         </text>

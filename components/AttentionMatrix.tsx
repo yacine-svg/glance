@@ -40,13 +40,13 @@ export default function AttentionMatrix({
       for (let col = 0; col <= r; col++) {
         const v = Math.sqrt(a[col]); // sqrt makes weak links visible
         const o = (r * n + col) * 4;
-        // from panel green to amber
-        img.data[o] = 29 + (242 - 29) * v;
-        img.data[o + 1] = 47 + (181 - 47) * v;
-        img.data[o + 2] = 41 + (68 - 41) * v;
+        // from night blue to horizon amber
+        img.data[o] = 22 + (246 - 22) * v;
+        img.data[o + 1] = 34 + (180 - 34) * v;
+        img.data[o + 2] = 68 + (94 - 68) * v;
         img.data[o + 3] = 255;
       }
-      if (selected === r) for (let col = r + 1; col < n; col++) img.data.set([239, 233, 220, 40], (r * n + col) * 4);
+      if (selected === r) for (let col = r + 1; col < n; col++) img.data.set([237, 240, 255, 40], (r * n + col) * 4);
     });
     g.putImageData(img, 0, 0);
   }, [tokens, cfg, layer, head, selected]);
