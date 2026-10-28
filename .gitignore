@@ -1,0 +1,12 @@
+node_modules
+.next
+out
+.env*.local
+*.tsbuildinfo
+next-env.d.ts
+.vercel
+.DS_Store
+__pycache__
+*.pyc
+/out/
+train/out/
