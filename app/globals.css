@@ -39,7 +39,8 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 body {
-  background: var(--bg);
+  /* transparent so the fixed night-sky layer behind it shows through */
+  background: transparent;
   min-height: 100vh;
 }
 
