@@ -36,12 +36,37 @@ const ENGINE = [
 
 export default function Inside() {
   return (
-    <main className="wrap" style={{ paddingTop: 36, paddingBottom: 60, maxWidth: 880 }}>
+    <main className="wrap doc" style={{ maxWidth: 920 }}>
       <h1>Inside the model</h1>
-      <p className="muted" style={{ marginTop: 14, fontSize: "1.1rem", maxWidth: "62ch" }}>
+      <p className="lede">
         Glance is a GPT-style transformer, the same family as the models behind ChatGPT, more than ten thousand times smaller than GPT-3. Every part was written by
         hand.
       </p>
+      <div className="panel" aria-label="The model, from input to output">
+        <h3 className="panel-title">The stack, bottom to top</h3>
+        <div className="layers" style={{ marginTop: 14 }}>
+          <div className="hot">
+            Next-token probabilities <span>softmax over 4,096 tokens</span>
+          </div>
+          <div>
+            Output head <span>tied to the token embedding</span>
+          </div>
+          <div>
+            Final LayerNorm <span>384</span>
+          </div>
+          {[6, 5, 4, 3, 2, 1].map((n) => (
+            <div key={n}>
+              Transformer block {n} <span>6-head attention + MLP 384 → 1,536 → 384</span>
+            </div>
+          ))}
+          <div>
+            Token + position embeddings <span>4,096 × 384 and 256 × 384</span>
+          </div>
+          <div className="hot">
+            Your text <span>byte-level BPE tokens</span>
+          </div>
+        </div>
+      </div>
       <ol style={{ listStyle: "none", padding: 0, margin: "36px 0 0", display: "grid", gap: 14 }}>
         {STEPS.map((s, i) => (
           <li key={s.title} className="panel" style={{ display: "grid", gridTemplateColumns: "2.2em 1fr", gap: 8 }}>

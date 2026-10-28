@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans, Newsreader } from "next/font/google";
 import Nav from "@/components/Nav";
+import SmoothScroll from "@/components/SmoothScroll";
 import "./globals.css";
 
 const serif = Newsreader({ subsets: ["latin"], variable: "--font-serif", display: "swap" });
@@ -16,13 +17,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${serif.variable} ${sans.variable}`}>
       <body>
-        <Nav />
-        {children}
-        <footer>
+        <SmoothScroll>
+          <Nav />
+          {children}
+          <footer>
           Glance was built and trained from scratch by Sekhri Mohammed Yassine.{" "}
           <a href="https://github.com/yacine-svg/glance">Source on GitHub</a>,{" "}
           <a href="https://yassine-sekhri.vercel.app">Portfolio</a>
-        </footer>
+          </footer>
+        </SmoothScroll>
       </body>
     </html>
   );
